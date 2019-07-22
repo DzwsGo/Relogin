@@ -2,11 +2,11 @@ package com.dzws.relogin.utils;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import com.dzws.relogin.ReLoginController;
+import com.dzws.relogin_compiler.IReLoginHelper;
 
 /**
  * description：
@@ -19,6 +19,22 @@ public class ReLogin {
   private ReLogin(){}
   private static Application mApplication;
   public static void init(Application application) {
+
+    try {
+      IReLoginHelper reLoginHelper =
+          (IReLoginHelper) Class.forName("com.dzws.relogin.ReLoginHelper")
+              .getConstructor()
+              .newInstance();
+
+      ReLoginController.getInstance().setLoginClassName(reLoginHelper.getReLoginClassName());
+      ReLoginController.getInstance().setReLoginCode(reLoginHelper.getReLoginResponseCode());
+
+      //new ReLoginHelper();
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
     mApplication = application;
     mApplication.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
       @Override public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
@@ -34,7 +50,6 @@ public class ReLogin {
       }
 
       @Override public void onActivityStarted(Activity activity) {
-
       }
 
       @Override public void onActivityResumed(Activity activity) {
@@ -54,7 +69,7 @@ public class ReLogin {
       }
 
       @Override public void onActivityDestroyed(Activity activity) {
-        String currentSimpleName = activity.getClass().getSimpleName();
+        String currentSimpleName = activity.getClass().getCanonicalName();
         if(TextUtils.equals(currentSimpleName, ReLoginController.getInstance().getLoginClassName()) && ReLoginController.getInstance().isReLogin()) {
           ReLoginController.getInstance().onReLoginDestroy();
         }

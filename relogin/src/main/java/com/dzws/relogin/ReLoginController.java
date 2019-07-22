@@ -5,6 +5,10 @@ import android.util.Log;
 import com.dzws.relogin.utils.ReLogin;
 import com.dzws.relogin.utils.RxBus;
 import io.reactivex.Observable;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * description：
@@ -62,7 +66,7 @@ public class ReLoginController {
   /**
    * 去登陆
    */
-  private void toLogin() {
+  public void toLogin() {
     try {
       Class<?> loginClass = Class.forName(mLoginClassName);
       Intent intent = new Intent(ReLogin.getApp(), loginClass);
@@ -71,8 +75,8 @@ public class ReLoginController {
       isReLogin = true;
     } catch (ClassNotFoundException e) {
       e.printStackTrace();
+      Log.e(TAG, "toLogin mLoginClassName : " + mLoginClassName + " ClassNotFoundException");
     }
-    Log.e(TAG, "toLogin mLoginClassName : " + mLoginClassName + " ClassNotFoundException");
   }
 
   /**
@@ -92,14 +96,25 @@ public class ReLoginController {
   /**
    * 设置响应code
    */
-  public void setReponseCode(int code) {
+  public void setResponseCode(int code) {
     if (mNeedLoginCode == code) {
       toLogin();
     }
   }
 
   public void onReLoginDestroy() {
+    Log.d("mainClassName","onReLoginDestroy");
     isReLogin = false;
     //反射获取当前正在运行的class，执行reload操作
+
+    try {
+      Class<?> mainClassName = Class.forName("com.dzws.simple.MainActivity");
+      Method comeOn = mainClassName.getMethod("comeOn");
+      Object o = mainClassName.newInstance();
+      Log.d("mainClassName","mainClassName o : " + o);
+      comeOn.invoke(o);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 }
