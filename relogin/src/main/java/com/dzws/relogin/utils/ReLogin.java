@@ -22,7 +22,7 @@ public class ReLogin {
   private ReLogin(){}
   private static Application mApplication;
   private static HashMap<String,Activity> activityMap = new HashMap<>();
-  public void init(Application application) {
+  public static void init(Application application) {
 
     try {
       IReLoginHelper reLoginHelper =
@@ -79,7 +79,7 @@ public class ReLogin {
     });
   }
 
-  private void setCurrentActivityName(Activity activity) {
+  private static void setCurrentActivityName(Activity activity) {
     String currentSimpleName = activity.getClass().getCanonicalName();
     Log.d(TAG,"onActivityCreated : " + currentSimpleName);
     if(!TextUtils.equals(currentSimpleName, ReLoginController.getInstance().getLoginClassName())) {
