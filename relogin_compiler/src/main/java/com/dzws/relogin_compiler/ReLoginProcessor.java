@@ -3,6 +3,7 @@ package com.dzws.relogin_compiler;
 import com.dzws.relogin_annotation.ReLoad;
 import com.dzws.relogin_annotation.ReLogin;
 import com.google.auto.service.AutoService;
+import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
@@ -41,7 +42,6 @@ public class ReLoginProcessor extends AbstractProcessor {
   private Messager mMessager;
   private Filer mFilerUtils;
   private String methodClassName;
-  private HashMap<String, String> reloadMethodMap = new HashMap();
 
   @Override public synchronized void init(ProcessingEnvironment processingEnvironment) {
     super.init(processingEnvironment);
@@ -56,7 +56,7 @@ public class ReLoginProcessor extends AbstractProcessor {
   public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
     String reloadMethodName = "",reLoginName = "";
     int reLoginCode = -1;
-    mMessager.printMessage(Diagnostic.Kind.WARNING,"ReLoginProcessor process");
+
     Set<? extends Element> mReLoginElement =
         roundEnvironment.getElementsAnnotatedWith(ReLogin.class);
     Set<? extends Element> mReLoadElement =
@@ -65,15 +65,29 @@ public class ReLoginProcessor extends AbstractProcessor {
       ReLogin reLogin = element.getAnnotation(ReLogin.class);
       reLoginName = ((TypeElement)element).getQualifiedName().toString();
       reLoginCode = reLogin.reLoginCode();
-      mMessager.printMessage(Diagnostic.Kind.WARNING,"ReLoginProcessor reLoginName : " + reLoginName + " reLoginCode : " + reLoginCode);
     }
 
-
+    CodeBlock.Builder builder = CodeBlock.builder();
     for (Element element : mReLoadElement) {
       reloadMethodName = element.getSimpleName().toString();
-      reloadMethodMap.put(reLoginName, reloadMethodName);
-      mMessager.printMessage(Diagnostic.Kind.WARNING,"ReLoginProcessor reloadMethodName : " + reloadMethodName);
+      String className =
+          ((TypeElement) element.getEnclosingElement()).getQualifiedName().toString();
+      builder.add("put($S,$S);", className, reloadMethodName);
     }
+
+    CodeBlock mapInitCodeBlock =
+        CodeBlock.builder()
+            .add("{{")
+            .add(builder.build())
+            .add("}}; return reloadMethodMap;", builder.build())
+            .build();
+    MethodSpec getReloadMethodMap = MethodSpec.methodBuilder("getReloadMethodMap")
+        .addModifiers(Modifier.PUBLIC)
+        .addAnnotation(Override.class)
+        .returns(HashMap.class)
+        .addCode(
+            "HashMap reloadMethodMap = new HashMap<String,String>()")
+        .addCode(mapInitCodeBlock).build();
 
     MethodSpec getReLoginClassName =
         MethodSpec.methodBuilder("getReLoginClassName")
@@ -89,26 +103,10 @@ public class ReLoginProcessor extends AbstractProcessor {
         .addStatement("return $L", reLoginCode)
         .build();
 
-    //MethodSpec.methodBuilder("getReLoginConfigMap")
-    //    .addAnnotation(Override.class)
-    //    .addModifiers(Modifier.PUBLIC)
-    //    .returns(HashMap.class)
-    //    .addStatement("return $T",reloadMethodMap);
-
-    MethodSpec main = MethodSpec.methodBuilder("main")
-        .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
-        .returns(void.class)
-        .addParameter(String[].class, "args")
-        .addStatement("$T.out.println($S)", System.class, "ReLoginProcessor reloadMethodName : "
-            + reloadMethodName
-            + " methodClassName : "
-            + methodClassName)
-        .build();
-
     ArrayList<MethodSpec> methodSpecs = new ArrayList<>();
     methodSpecs.add(getReLoginCode);
     methodSpecs.add(getReLoginClassName);
-    methodSpecs.add(main);
+    methodSpecs.add(getReloadMethodMap);
 
     TypeSpec reLoginHelper =
         TypeSpec.classBuilder("ReLoginHelper")
@@ -118,21 +116,6 @@ public class ReLoginProcessor extends AbstractProcessor {
 
     JavaFile javaFile = JavaFile.builder("com.dzws.relogin", reLoginHelper).build();
 
-    //MethodSpec main = MethodSpec.methodBuilder("main")
-    //    .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
-    //    .returns(void.class)
-    //    .addParameter(String[].class, "args")
-    //    .addStatement("$T.out.println($S)", System.class, "ReLoginProcessor reloadMethodName : " + reloadMethodName + " reLoginName : " + reLoginName + " reLoginCode : " + reLoginCode + " mReLoadElement.size() : " + mReLoadElement.size())
-    //    .build();
-    //
-    //TypeSpec helloWorld = TypeSpec.classBuilder("HelloWorld")
-    //    .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
-    //    .addMethod(main)
-    //    .build();
-    //
-    //JavaFile javaFile = JavaFile.builder("com.example.helloworld", helloWorld)
-    //    .build();
-    //
     createSourceFile(reLoginHelper.name, javaFile.toString());
 
     return true;

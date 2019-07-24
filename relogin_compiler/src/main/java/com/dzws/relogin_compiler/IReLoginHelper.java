@@ -11,5 +11,5 @@ import java.util.HashMap;
 public interface IReLoginHelper {
   String getReLoginClassName();
   int getReLoginResponseCode();
-  //HashMap<String,String> getReLoadMethodRelation();
+  HashMap<String,String> getReloadMethodMap();
 }

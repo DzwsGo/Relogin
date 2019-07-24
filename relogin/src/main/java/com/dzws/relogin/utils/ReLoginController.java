@@ -1,14 +1,16 @@
-package com.dzws.relogin;
+package com.dzws.relogin.utils;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.support.annotation.MainThread;
+import android.text.TextUtils;
 import android.util.Log;
-import com.dzws.relogin.utils.ReLogin;
-import com.dzws.relogin.utils.RxBus;
 import io.reactivex.Observable;
+import io.reactivex.functions.Function;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 /**
  * description：
@@ -24,7 +26,17 @@ public class ReLoginController {
   private int mNeedLoginCode;
   private boolean isReLogin = false;
 
-  public boolean isReLogin() {
+  private HashMap<String,String> reloadMethodMap = new HashMap<>();
+
+  public HashMap<String, String> getReloadMethodMap() {
+    return reloadMethodMap;
+  }
+
+  public void setReloadMethodMap(HashMap<String, String> reloadMethodMap) {
+    this.reloadMethodMap = reloadMethodMap;
+  }
+
+  boolean isReLogin() {
     return isReLogin;
   }
 
@@ -36,29 +48,18 @@ public class ReLoginController {
     return ReLoginControllerHolder.mReLoginController;
   }
 
-  public void putCurrentActivityClassName(String className) {
+  void putCurrentActivityClassName(String className) {
     this.mCurrentActivityClassName = className;
   }
 
-  /**
-   * 登陆完成后由Login页面调用
-   */
-  public void sendLoginEvent() {
-    Log.d(TAG, "ReLoginController mCurrentActivityClassName : " + mCurrentActivityClassName);
-    RxBus.get().sendEvent(new ReLoginBean(mCurrentActivityClassName));
-  }
-
-  /**
-   * 获取重新登陆后的事件
-   */
-  public Observable<ReLoginBean> getLoginEvent() {
-    return RxBus.get().getEvent(ReLoginBean.class);
+  public String getCurrentActivityClassName() {
+    return mCurrentActivityClassName;
   }
 
   /**
    * 在Application中调用
    */
-  public void setLoginClassName(String loginClassName) {
+  void setLoginClassName(String loginClassName) {
     Log.d(TAG, "ReLoginController loginClassName : " + loginClassName);
     this.mLoginClassName = loginClassName;
   }
@@ -71,6 +72,7 @@ public class ReLoginController {
       Class<?> loginClass = Class.forName(mLoginClassName);
       Intent intent = new Intent(ReLogin.getApp(), loginClass);
       intent.putExtra(RELOGIN, true);
+      intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
       ReLogin.getApp().startActivity(intent);
       isReLogin = true;
     } catch (ClassNotFoundException e) {
@@ -82,16 +84,18 @@ public class ReLoginController {
   /**
    * 获取登陆类名
    */
-  public String getLoginClassName() {
+  String getLoginClassName() {
     return mLoginClassName;
   }
 
   /**
    * 设置需要重新登陆的code
    */
-  public void setReLoginCode(int code) {
+  void setReLoginCode(int code) {
     this.mNeedLoginCode = code;
   }
+
+
 
   /**
    * 设置响应code
@@ -102,19 +106,28 @@ public class ReLoginController {
     }
   }
 
-  public void onReLoginDestroy() {
-    Log.d("mainClassName","onReLoginDestroy");
+  boolean isReLoginDestory = false;
+
+  Activity reloadActivity;
+  void setReLoadActivity(Activity reloadActivity) {
+    this.reloadActivity = reloadActivity;
+  }
+
+  void onReLogin(Activity activity) {
+    Log.d("mainClassName","onReLogin clazzName : " + mCurrentActivityClassName);
     isReLogin = false;
     //反射获取当前正在运行的class，执行reload操作
-
     try {
-      Class<?> mainClassName = Class.forName("com.dzws.simple.MainActivity");
-      Method comeOn = mainClassName.getMethod("comeOn");
-      Object o = mainClassName.newInstance();
-      Log.d("mainClassName","mainClassName o : " + o);
-      comeOn.invoke(o);
+      String reLoadMethod = reloadMethodMap.get(mCurrentActivityClassName);
+      if(TextUtils.isEmpty(reLoadMethod) || reLoadMethod == null) {
+        return;
+      }
+
+      Method method = activity.getClass().getMethod(reLoadMethod);
+      method.invoke(activity);
     } catch (Exception e) {
       e.printStackTrace();
+      Log.e(TAG,"onReLogin e : "  + e);
     }
   }
 }

@@ -1,31 +1,35 @@
 package com.dzws.simple;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import com.dzws.relogin.ReLoginController;
+import android.widget.Toast;
+import com.dzws.relogin.utils.ReLoginController;
 import com.dzws.relogin_annotation.ReLoad;
-import com.dzws.relogin_annotation.ReLogin;
 
 public class MainActivity extends AppCompatActivity {
+  private String TAG = getClass().getSimpleName();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    Log.d("mainClassName","mainClassName o : " + this);
-
   }
 
   @ReLoad
   public void comeOn() {
-    Log.d("mainClassName","comeOn mainClassName o : " + this);
+    Log.d(TAG, "comeOn start");
+    Toast.makeText(MainActivity.this, TAG + "come on start", Toast.LENGTH_SHORT).show();
   }
-  @ReLoad
-  public void baby(){}
 
   public void toReLogin(View view) {
     ReLoginController.getInstance().toLogin();
+  }
+
+  public void toCurrent(View view) {
+    Intent intent = new Intent(MainActivity.this, CurrentActivity.class);
+    startActivity(intent);
   }
 }

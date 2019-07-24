@@ -18,7 +18,6 @@ public class BaseApplication extends Application {
     ReLogin.init(this);
     registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
       @Override public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-        Log.d("BaseApplication","BaseApplication onActivityCreated activity : " + activity.getClass().getSimpleName());
       }
 
       @Override public void onActivityStarted(Activity activity) {

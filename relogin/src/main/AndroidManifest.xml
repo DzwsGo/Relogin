@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dzws.relogin">
+  <!--获取Activity任务栈 权限-->
+  <uses-permission android:name="android.permission.GET_TASKS" />
   <application
       android:allowBackup="true"
       android:supportsRtl="true">
