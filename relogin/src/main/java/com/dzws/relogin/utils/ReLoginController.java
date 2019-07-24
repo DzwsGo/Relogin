@@ -106,15 +106,8 @@ public class ReLoginController {
     }
   }
 
-  boolean isReLoginDestory = false;
-
-  Activity reloadActivity;
-  void setReLoadActivity(Activity reloadActivity) {
-    this.reloadActivity = reloadActivity;
-  }
-
   void onReLogin(Activity activity) {
-    Log.d("mainClassName","onReLogin clazzName : " + mCurrentActivityClassName);
+    Log.d("ReLoginController","onReLogin clazzName : " + mCurrentActivityClassName);
     isReLogin = false;
     //反射获取当前正在运行的class，执行reload操作
     try {

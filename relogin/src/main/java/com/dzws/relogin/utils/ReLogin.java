@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import com.dzws.relogin_compiler.IReLoginHelper;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -21,7 +24,7 @@ public class ReLogin {
   private static String TAG = "ReLogin";
   private ReLogin(){}
   private static Application mApplication;
-  private static HashMap<String,Activity> activityMap = new HashMap<>();
+  private static HashMap<String, List<Activity>> activityMap = new HashMap<>();
   public static void init(Application application) {
 
     try {
@@ -39,7 +42,14 @@ public class ReLogin {
     mApplication = application;
     mApplication.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
       @Override public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-        activityMap.put(activity.getClass().getCanonicalName(),activity);
+        List<Activity> activities = activityMap.get(activity.getClass().getCanonicalName());
+        if(activities == null) {
+          activities = new ArrayList<>();
+        }
+        if(!activities.contains(activity)) {
+          activities.add(activity);
+        }
+        activityMap.put(activity.getClass().getCanonicalName(),activities);
       }
 
       @Override public void onActivityStarted(Activity activity) {
@@ -65,15 +75,26 @@ public class ReLogin {
       @Override public void onActivityDestroyed(Activity activity) {
         String currentSimpleName = activity.getClass().getCanonicalName();
         Log.d(TAG,"onActivityDestroyed : " + currentSimpleName + " getCurrentActivityClassName : " + ReLoginController.getInstance().getCurrentActivityClassName());
-        activityMap.remove(currentSimpleName);
-
+        List<Activity> activities = activityMap.get(currentSimpleName);
+        if(activities == null || activities.size() == 0) {
+          activityMap.remove(currentSimpleName);
+        }else {
+          activities.remove(activity);
+          activityMap.put(currentSimpleName,activities);
+        }
         if(TextUtils.equals(currentSimpleName, ReLoginController.getInstance().getLoginClassName()) && ReLoginController.getInstance().isReLogin()) {
-          Set<Map.Entry<String, Activity>> entries = activityMap.entrySet();
-          for (Map.Entry<String, Activity> entry : entries) {
-            if(TextUtils.equals(ReLoginController.getInstance().getCurrentActivityClassName(),entry.getKey())) {
-              ReLoginController.getInstance().onReLogin(entry.getValue());
+          Set<Map.Entry<String, List<Activity>>> entries = activityMap.entrySet();
+          for (Map.Entry<String, List<Activity>> entry : entries)
+            if (TextUtils.equals(ReLoginController.getInstance().getCurrentActivityClassName(), entry.getKey())) {
+              List<Activity> value = entry.getValue();
+              if (value != null) {
+                Activity act = value.get(value.size() - 1);
+                Log.d(TAG, "onActivityDestroyed : " + act);
+                if (!act.isFinishing()) {
+                  ReLoginController.getInstance().onReLogin(act);
+                }
+              }
             }
-          }
         }
       }
     });

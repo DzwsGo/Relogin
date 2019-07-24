@@ -14,8 +14,7 @@ import com.dzws.relogin_annotation.ReLogin;
  * @author: Lwang
  * @createTime: 2019-07-22 11:34
  */
-@ReLogin(reLoginCode = 401)
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
   private String TAG = getClass().getSimpleName();
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -27,8 +26,9 @@ public class LoginActivity extends AppCompatActivity {
     }
   }
 
-  @ReLoad
-  void get() {
+  @Override
+  public void get() {
+    super.get();
 
   }
 }
