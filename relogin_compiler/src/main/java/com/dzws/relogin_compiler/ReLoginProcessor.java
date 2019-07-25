@@ -57,7 +57,7 @@ public class ReLoginProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
-        String reloadMethodName = "", reLoginName = "";
+        String reloadMethodName = "", reLoginName = "",reLoadMethodClassName = "";
         int reLoginCode = -1;
         CodeBlock.Builder builder = CodeBlock.builder();
 
@@ -67,12 +67,13 @@ public class ReLoginProcessor extends AbstractProcessor {
                 roundEnvironment.getElementsAnnotatedWith(ReLoad.class);
         for (Element element : mReLoginElement) {
             ReLogin reLogin = element.getAnnotation(ReLogin.class);
-            reLoginName = ((TypeElement) element).getQualifiedName().toString();
+            reLoginName = reLogin.reLoginClassName();
+            reLoadMethodClassName = ((TypeElement) element).getQualifiedName().toString();
             reLoginCode = reLogin.reLoginCode();
 //      String className =
 //              ((TypeElement) element.getEnclosingElement()).getQualifiedName().toString();
             reloadMethodName = reLogin.reLoginMethodName();
-            builder.add("put($S,$S);", reLoginName, reloadMethodName);
+            builder.add("put($S,$S);", reLoadMethodClassName, reloadMethodName);
         }
 
 

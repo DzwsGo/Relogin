@@ -2,12 +2,10 @@ package com.dzws.relogin.utils;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.ComponentName;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import com.dzws.relogin_compiler.IReLoginHelper;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

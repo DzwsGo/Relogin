@@ -28,11 +28,11 @@ public class ReLoginController {
 
   private HashMap<String,String> reloadMethodMap = new HashMap<>();
 
-  public HashMap<String, String> getReloadMethodMap() {
+  HashMap<String, String> getReloadMethodMap() {
     return reloadMethodMap;
   }
 
-  public void setReloadMethodMap(HashMap<String, String> reloadMethodMap) {
+  void setReloadMethodMap(HashMap<String, String> reloadMethodMap) {
     this.reloadMethodMap = reloadMethodMap;
   }
 

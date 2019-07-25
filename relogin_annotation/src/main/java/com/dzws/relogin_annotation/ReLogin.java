@@ -18,4 +18,5 @@ import java.lang.annotation.Target;
 public @interface ReLogin {
   int reLoginCode();
   String reLoginMethodName();
+  String reLoginClassName();
 }

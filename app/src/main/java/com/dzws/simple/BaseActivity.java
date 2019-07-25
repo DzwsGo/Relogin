@@ -6,7 +6,7 @@ import com.dzws.relogin_annotation.ReLogin;
 
 import java.lang.annotation.Inherited;
 
-@ReLogin(reLoginCode = 401,reLoginMethodName = "get")
+@ReLogin(reLoginCode = 401,reLoginMethodName = "get",reLoginClassName = "com.dzws.simple.LoginActivity")
 public abstract class BaseActivity extends AppCompatActivity {
     public void get(){}
 }
