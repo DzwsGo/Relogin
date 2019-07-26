@@ -1,10 +1,7 @@
 package com.dzws.simple;
 
-import android.app.Activity;
 import android.app.Application;
-import android.os.Bundle;
-import android.util.Log;
-import com.dzws.relogin.utils.ReLogin;
+import com.dzws.relogin.utils.Relogin;
 
 /**
  * description：
@@ -15,6 +12,6 @@ import com.dzws.relogin.utils.ReLogin;
 public class BaseApplication extends Application {
   @Override public void onCreate() {
     super.onCreate();
-    ReLogin.init(this);
+    Relogin.init(this);
   }
 }

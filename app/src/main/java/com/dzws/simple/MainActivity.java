@@ -7,8 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.dzws.relogin.utils.ReLoginController;
-import com.dzws.relogin_annotation.ReLoad;
+import com.dzws.relogin.utils.ReloginController;
+import com.dzws.relogin_annotation.Reload;
 
 public class MainActivity extends AppCompatActivity {
   private String TAG = getClass().getSimpleName();
@@ -20,14 +20,14 @@ public class MainActivity extends AppCompatActivity {
     ((TextView)findViewById(R.id.tv_name)).setText(TAG + this);
   }
 
-  @ReLoad
+  @Reload
   public void comeOn() {
     Log.d(TAG,"MainActivity Get : " + this);
     Toast.makeText(MainActivity.this, TAG + " start " + this, Toast.LENGTH_SHORT).show();
   }
 
-  public void toReLogin(View view) {
-    ReLoginController.getInstance().toLogin();
+  public void toRelogin(View view) {
+    ReloginController.getInstance().toLogin();
   }
 
   public void toCurrent(View view) {

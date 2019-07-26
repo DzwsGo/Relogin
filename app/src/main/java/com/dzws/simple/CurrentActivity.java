@@ -3,17 +3,12 @@ package com.dzws.simple;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dzws.relogin.utils.ReLoginController;
-import com.dzws.relogin_annotation.ReLoad;
-import com.dzws.relogin_annotation.ReLogin;
-
-import java.lang.annotation.Inherited;
+import com.dzws.relogin.utils.ReloginController;
 
 /**
  * description：
@@ -38,8 +33,8 @@ public class CurrentActivity extends BaseActivity {
         Toast.makeText(CurrentActivity.this, TAG + " start " + this, Toast.LENGTH_SHORT).show();
     }
 
-    public void toReLogin(View view) {
-        ReLoginController.getInstance().toLogin();
+    public void toRelogin(View view) {
+        ReloginController.getInstance().toLogin();
     }
 
     public void toCurrent(View view) {

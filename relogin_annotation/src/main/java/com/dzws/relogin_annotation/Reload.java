@@ -15,5 +15,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.METHOD)
 @Inherited
-public @interface ReLoad {
+public @interface Reload {
 }

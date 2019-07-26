@@ -15,8 +15,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)
 @Inherited
-public @interface ReLogin {
-  int reLoginCode();
-  String reLoginMethodName();
-  String reLoginClassName();
+public @interface Relogin {
+  int reloginCode();
+  String reloginMethodName();
+  String reloginClassName();
 }

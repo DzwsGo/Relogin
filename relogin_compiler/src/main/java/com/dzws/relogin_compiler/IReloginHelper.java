@@ -8,8 +8,8 @@ import java.util.HashMap;
  * @author: Lwang
  * @createTime: 2019-07-22 10:54
  */
-public interface IReLoginHelper {
-  String getReLoginClassName();
-  int getReLoginResponseCode();
+public interface IReloginHelper {
+  String getReloginClassName();
+  int getReloginResponseCode();
   HashMap<String,String> getReloadMethodMap();
 }

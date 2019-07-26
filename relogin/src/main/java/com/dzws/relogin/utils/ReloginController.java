@@ -2,11 +2,8 @@ package com.dzws.relogin.utils;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.annotation.MainThread;
 import android.text.TextUtils;
 import android.util.Log;
-import io.reactivex.Observable;
-import io.reactivex.functions.Function;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
@@ -18,13 +15,13 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
  * @author: Lwang
  * @createTime: 2019-07-01 17:57
  */
-public class ReLoginController {
+public class ReloginController {
   private String RELOGIN = "RE_LOGIN";
   private String TAG = getClass().getSimpleName();
   private String mCurrentActivityClassName;
   private String mLoginClassName;
   private int mNeedLoginCode;
-  private boolean isReLogin = false;
+  private boolean isRelogin = false;
 
   private HashMap<String,String> reloadMethodMap = new HashMap<>();
 
@@ -36,16 +33,16 @@ public class ReLoginController {
     this.reloadMethodMap = reloadMethodMap;
   }
 
-  boolean isReLogin() {
-    return isReLogin;
+  boolean isRelogin() {
+    return isRelogin;
   }
 
-  private static class ReLoginControllerHolder {
-    static ReLoginController mReLoginController = new ReLoginController();
+  private static class ReloginControllerHolder {
+    static ReloginController mReloginController = new ReloginController();
   }
 
-  public static ReLoginController getInstance() {
-    return ReLoginControllerHolder.mReLoginController;
+  public static ReloginController getInstance() {
+    return ReloginControllerHolder.mReloginController;
   }
 
   void putCurrentActivityClassName(String className) {
@@ -60,7 +57,7 @@ public class ReLoginController {
    * 在Application中调用
    */
   void setLoginClassName(String loginClassName) {
-    Log.d(TAG, "ReLoginController loginClassName : " + loginClassName);
+    Log.d(TAG, "ReloginController loginClassName : " + loginClassName);
     this.mLoginClassName = loginClassName;
   }
 
@@ -70,11 +67,11 @@ public class ReLoginController {
   public void toLogin() {
     try {
       Class<?> loginClass = Class.forName(mLoginClassName);
-      Intent intent = new Intent(ReLogin.getApp(), loginClass);
+      Intent intent = new Intent(Relogin.getApp(), loginClass);
       intent.putExtra(RELOGIN, true);
       intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-      ReLogin.getApp().startActivity(intent);
-      isReLogin = true;
+      Relogin.getApp().startActivity(intent);
+      isRelogin = true;
     } catch (ClassNotFoundException e) {
       e.printStackTrace();
       Log.e(TAG, "toLogin mLoginClassName : " + mLoginClassName + " ClassNotFoundException");
@@ -91,7 +88,7 @@ public class ReLoginController {
   /**
    * 设置需要重新登陆的code
    */
-  void setReLoginCode(int code) {
+  void setReloginCode(int code) {
     this.mNeedLoginCode = code;
   }
 
@@ -106,9 +103,9 @@ public class ReLoginController {
     }
   }
 
-  void onReLogin(Activity activity) {
-    Log.d("ReLoginController","onReLogin clazzName : " + mCurrentActivityClassName);
-    isReLogin = false;
+  void onRelogin(Activity activity) {
+    Log.d("ReloginController","onRelogin clazzName : " + mCurrentActivityClassName);
+    isRelogin = false;
     //反射获取当前正在运行的class，执行reload操作
     try {
       String reLoadMethod = reloadMethodMap.get(mCurrentActivityClassName);
@@ -120,7 +117,7 @@ public class ReLoginController {
       method.invoke(activity);
     } catch (Exception e) {
       e.printStackTrace();
-      Log.e(TAG,"onReLogin e : "  + e);
+      Log.e(TAG,"onRelogin e : "  + e);
     }
   }
 }
