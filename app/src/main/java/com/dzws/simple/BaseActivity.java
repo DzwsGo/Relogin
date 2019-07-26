@@ -2,9 +2,9 @@ package com.dzws.simple;
 
 import android.support.v7.app.AppCompatActivity;
 
-import com.dzws.relogin_annotation.Relogin;
+import com.dzws.relogin_annotation.ReloadInheritable;
 
-@Relogin(reloginCode = 401, reloginMethodName = "get", reloginClassName = "com.dzws.simple.LoginActivity")
+@ReloadInheritable(reloadMethod = "get")
 public abstract class BaseActivity extends AppCompatActivity {
     public void get(){}
 }

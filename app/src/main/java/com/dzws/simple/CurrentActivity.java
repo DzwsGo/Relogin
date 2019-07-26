@@ -30,7 +30,7 @@ public class CurrentActivity extends BaseActivity {
     @Override
     public void get() {
         Log.d(TAG, "CurrentActivity Get : " + this);
-        Toast.makeText(CurrentActivity.this, TAG + " start " + this, Toast.LENGTH_SHORT).show();
+        Toast.makeText(CurrentActivity.this, TAG + " Get " + this, Toast.LENGTH_SHORT).show();
     }
 
     public void toRelogin(View view) {

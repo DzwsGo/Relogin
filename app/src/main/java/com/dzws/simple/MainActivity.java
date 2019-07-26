@@ -22,8 +22,8 @@ public class MainActivity extends AppCompatActivity {
 
   @Reload
   public void comeOn() {
-    Log.d(TAG,"MainActivity Get : " + this);
-    Toast.makeText(MainActivity.this, TAG + " start " + this, Toast.LENGTH_SHORT).show();
+    Log.d(TAG,"MainActivity comeOn : " + this);
+    Toast.makeText(MainActivity.this, TAG + " comeOn " + this, Toast.LENGTH_SHORT).show();
   }
 
   public void toRelogin(View view) {

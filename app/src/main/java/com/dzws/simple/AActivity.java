@@ -16,6 +16,6 @@ public class AActivity extends CurrentActivity {
     public void get() {
         super.get();
         Log.d(TAG,"AActivity Get : " + this);
-        Toast.makeText(AActivity.this, TAG + " start : " + this, Toast.LENGTH_SHORT).show();
+        Toast.makeText(AActivity.this, TAG + " Get : " + this, Toast.LENGTH_SHORT).show();
     }
 }

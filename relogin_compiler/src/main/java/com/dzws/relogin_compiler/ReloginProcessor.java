@@ -1,6 +1,7 @@
 package com.dzws.relogin_compiler;
 
 import com.dzws.relogin_annotation.Reload;
+import com.dzws.relogin_annotation.ReloadInheritable;
 import com.dzws.relogin_annotation.Relogin;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.CodeBlock;
@@ -57,23 +58,28 @@ public class ReloginProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
-        String reloadMethodName = "", reLoginName = "",reLoadMethodClassName = "";
+        String reloadMethodName = "", reLoginName = "", reLoadMethodClassName = "";
         int reLoginCode = -1;
         CodeBlock.Builder builder = CodeBlock.builder();
-
+        /**
+         * 用来获取login classname 和reloginCode
+         */
         Set<? extends Element> mReloginElement =
                 roundEnvironment.getElementsAnnotatedWith(Relogin.class);
+        /**
+         * 用来获取reload classname和methodname
+         */
         Set<? extends Element> mReLoadElement =
                 roundEnvironment.getElementsAnnotatedWith(Reload.class);
+        /**
+         * 用来获取可继承注解 classname及其methodname
+         */
+        Set<? extends Element> reloadInheritableElements = roundEnvironment.getElementsAnnotatedWith(ReloadInheritable.class);
+
         for (Element element : mReloginElement) {
             Relogin reLogin = element.getAnnotation(Relogin.class);
-            reLoginName = reLogin.reloginClassName();
-            reLoadMethodClassName = ((TypeElement) element).getQualifiedName().toString();
+            reLoginName = ((TypeElement) element).getQualifiedName().toString();
             reLoginCode = reLogin.reloginCode();
-//      String className =
-//              ((TypeElement) element.getEnclosingElement()).getQualifiedName().toString();
-            reloadMethodName = reLogin.reloginMethodName();
-            builder.add("put($S,$S);", reLoadMethodClassName, reloadMethodName);
         }
 
 
@@ -82,6 +88,13 @@ public class ReloginProcessor extends AbstractProcessor {
                     ((TypeElement) element.getEnclosingElement()).getQualifiedName().toString();
             reloadMethodName = element.getSimpleName().toString();
             builder.add("put($S,$S);", className, reloadMethodName);
+        }
+
+        for (Element element : reloadInheritableElements) {
+            String className = ((TypeElement)element).getQualifiedName().toString();
+            ReloadInheritable reloadInheritable = element.getAnnotation(ReloadInheritable.class);
+            String reloadMethod = reloadInheritable.reloadMethod();
+            builder.add("put($S,$S);", className, reloadMethod);
         }
 
         CodeBlock mapInitCodeBlock =
