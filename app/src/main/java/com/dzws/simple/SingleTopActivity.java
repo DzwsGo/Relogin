@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
-public class AActivity extends CurrentActivity {
+public class SingleTopActivity extends StandardActivity {
     private String TAG = getClass().getSimpleName();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -15,7 +15,7 @@ public class AActivity extends CurrentActivity {
     @Override
     public void get() {
         super.get();
-        Log.d(TAG,"AActivity Get : " + this);
-        Toast.makeText(AActivity.this, TAG + " Get : " + this, Toast.LENGTH_SHORT).show();
+        Log.d(TAG,"SingleTopActivity Get : " + this);
+        Toast.makeText(SingleTopActivity.this, TAG + " Get : " + this, Toast.LENGTH_SHORT).show();
     }
 }

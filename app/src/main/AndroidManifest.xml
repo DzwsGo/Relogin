@@ -18,8 +18,10 @@
       </intent-filter>
     </activity>
     <activity android:name=".LoginActivity"/>
-    <activity android:name=".CurrentActivity"/>
-      <activity android:name=".AActivity" />
+    <activity android:name=".StandardActivity"/>
+      <activity android:name=".SingleTopActivity" android:launchMode="singleTop"/>
+    <activity android:name=".SingleTaskActivity" android:launchMode="singleTask"/>
+    <activity android:name=".SingleInstanceActivity" android:launchMode="singleInstance"/>
   </application>
 
 </manifest>

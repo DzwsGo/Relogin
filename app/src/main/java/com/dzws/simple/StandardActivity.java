@@ -16,34 +16,44 @@ import com.dzws.relogin.utils.ReloginController;
  * @author: Lwang
  * @createTime: 2019-07-22 11:34
  */
-public class CurrentActivity extends BaseActivity {
+public class StandardActivity extends BaseActivity {
     private String TAG = getClass().getSimpleName();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d(TAG, "CurrentActivity : " + this);
+        Log.d(TAG, "StandardActivity : " + this);
         ((TextView) findViewById(R.id.tv_name)).setText(TAG + this);
     }
 
     @Override
     public void get() {
-        Log.d(TAG, "CurrentActivity Get : " + this);
-        Toast.makeText(CurrentActivity.this, TAG + " Get " + this, Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "StandardActivity Get : " + this);
+        Toast.makeText(StandardActivity.this, TAG + " Get " + this, Toast.LENGTH_SHORT).show();
     }
 
     public void toRelogin(View view) {
         ReloginController.getInstance().toLogin();
     }
 
-    public void toCurrent(View view) {
-        Intent intent = new Intent(CurrentActivity.this, CurrentActivity.class);
+    public void toStandard(View view) {
+        Intent intent = new Intent(StandardActivity.this, StandardActivity.class);
         startActivity(intent);
     }
 
-    public void toA(View view) {
-        Intent intent = new Intent(CurrentActivity.this, AActivity.class);
+    public void toSingleTop(View view) {
+        Intent intent = new Intent(StandardActivity.this, SingleTopActivity.class);
+        startActivity(intent);
+    }
+
+    public void toSingleTask(View view) {
+        Intent intent = new Intent(StandardActivity.this, SingleTaskActivity.class);
+        startActivity(intent);
+    }
+
+    public void toSingleInstance(View view) {
+        Intent intent = new Intent(StandardActivity.this, SingleInstanceActivity.class);
         startActivity(intent);
     }
 }
