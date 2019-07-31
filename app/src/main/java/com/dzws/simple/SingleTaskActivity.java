@@ -5,11 +5,19 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.dzws.relogin_annotation.Reload;
+
 public class SingleTaskActivity extends StandardActivity {
     private String TAG = getClass().getSimpleName();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Reload
+    public void comeOn() {
+        Log.d(TAG, "MainActivity comeOn : " + this);
+        Toast.makeText(SingleTaskActivity.this, TAG + " comeOn " + this, Toast.LENGTH_SHORT).show();
     }
 
     @Override

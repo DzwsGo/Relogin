@@ -82,19 +82,18 @@ public class ReloginProcessor extends AbstractProcessor {
             reLoginCode = reLogin.reloginCode();
         }
 
+        for (Element element : reloadInheritableElements) {
+            String className = ((TypeElement)element).getQualifiedName().toString();
+            ReloadInheritable reloadInheritable = element.getAnnotation(ReloadInheritable.class);
+            String reloadMethod = reloadInheritable.reloadMethod();
+            builder.add("put($S,$S);", className, reloadMethod);
+        }
 
         for (Element element : mReLoadElement) {
             String className =
                     ((TypeElement) element.getEnclosingElement()).getQualifiedName().toString();
             reloadMethodName = element.getSimpleName().toString();
             builder.add("put($S,$S);", className, reloadMethodName);
-        }
-
-        for (Element element : reloadInheritableElements) {
-            String className = ((TypeElement)element).getQualifiedName().toString();
-            ReloadInheritable reloadInheritable = element.getAnnotation(ReloadInheritable.class);
-            String reloadMethod = reloadInheritable.reloadMethod();
-            builder.add("put($S,$S);", className, reloadMethod);
         }
 
         CodeBlock mapInitCodeBlock =
