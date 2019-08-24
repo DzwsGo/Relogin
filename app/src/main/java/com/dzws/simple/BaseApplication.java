@@ -13,5 +13,6 @@ public class BaseApplication extends Application {
   @Override public void onCreate() {
     super.onCreate();
     Relogin.init(this);
+    Relogin.getInstance().setModel(Relogin.MODEL_FINISH);
   }
 }

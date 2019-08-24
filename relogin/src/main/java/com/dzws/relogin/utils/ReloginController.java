@@ -72,10 +72,23 @@ public class ReloginController {
       intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
       Relogin.getApp().startActivity(intent);
       isRelogin = true;
+      if(reloginListener != null) {
+        reloginListener.onRelogin();
+      }
     } catch (ClassNotFoundException e) {
       e.printStackTrace();
       Log.e(TAG, "toLogin mLoginClassName : " + mLoginClassName + " ClassNotFoundException");
     }
+  }
+
+  private ReloginListener reloginListener;
+
+  void setReloginListener(ReloginListener reloginListener) {
+    this.reloginListener = reloginListener;
+  }
+
+  interface ReloginListener {
+    void onRelogin();
   }
 
   /**
@@ -103,8 +116,8 @@ public class ReloginController {
     }
   }
 
-  void onRelogin(Activity activity) {
-    Log.d("ReloginController","onRelogin clazzName : " + mCurrentActivityClassName);
+  void onReloginDoReload(Activity activity) {
+    Log.d("ReloginController","onReloginDoReload clazzName : " + mCurrentActivityClassName);
     isRelogin = false;
     //反射获取当前正在运行的class，执行reload操作
     try {
@@ -117,7 +130,7 @@ public class ReloginController {
       method.invoke(activity);
     } catch (Exception e) {
       e.printStackTrace();
-      Log.e(TAG,"onRelogin e : "  + e);
+      Log.e(TAG,"onReloginDoReload e : "  + e);
     }
   }
 }
