@@ -1,4 +1,4 @@
-package com.dzws.annotation;
+package com.dzws.relogin_annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;

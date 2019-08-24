@@ -1,4 +1,4 @@
-package com.dzws.annotation;
+package com.dzws.relogin_annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -10,9 +10,11 @@ import java.lang.annotation.Target;
  * description：
  *
  * @author: Lwang
- * @createTime: 2019-07-20 12:04
+ * @createTime: 2019-07-20 11:58
  */
 @Retention(RetentionPolicy.CLASS)
-@Target(ElementType.METHOD)
-public @interface Reload {
+@Target(ElementType.TYPE)
+@Inherited
+public @interface Relogin {
+  int reloginCode();
 }

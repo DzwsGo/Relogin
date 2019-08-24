@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.dzws.annotation.Reload;
+import com.dzws.relogin_annotation.Reload;
 
 public class SingleTaskActivity extends StandardActivity {
     private String TAG = getClass().getSimpleName();
