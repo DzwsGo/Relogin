@@ -9,7 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dzws.relogin.utils.ReloginController;
-import com.dzws.relogin_annotation.Reload;
+import com.dzws.annotation.Reload;
 
 public class MainActivity extends AppCompatActivity {
     private String TAG = getClass().getSimpleName();

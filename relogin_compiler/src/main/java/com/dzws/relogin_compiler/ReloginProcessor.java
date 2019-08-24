@@ -1,8 +1,8 @@
 package com.dzws.relogin_compiler;
 
-import com.dzws.relogin_annotation.Reload;
-import com.dzws.relogin_annotation.ReloadInheritable;
-import com.dzws.relogin_annotation.Relogin;
+import com.dzws.annotation.Reload;
+import com.dzws.annotation.ReloadInheritable;
+import com.dzws.annotation.Relogin;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;

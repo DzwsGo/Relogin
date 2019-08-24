@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.dzws.relogin_annotation.Relogin;
+import com.dzws.annotation.Relogin;
 
 /**
  * description：
