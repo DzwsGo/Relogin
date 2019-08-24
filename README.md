@@ -5,6 +5,10 @@ Relogin for Android
 
 
 ``Relogin.init(Application);``
+* 设置模式，默认为MODEL_FINISH
+ * Relogin.MODEL_FINISH 跳转至Login页面后finish其他activiy
+ * Relogin.MODEL_REFRESH 完成登陆后回到之前页面并进行刷新
+``Relogin.getInstance().setModel(Relogin.MODEL_FINISH);``
 
 2、如果需要使用自动刷新功能
   *  ``ReloadInheritable`` 注解,可继承
