@@ -1,0 +1,36 @@
+/*
+Shared gradle properties
+ */
+ext {
+
+    android = [compileSdkVersion: 28,
+               buildToolsVersion: '28.0.2',
+               minSdkVersion    : 14,
+               targetSdkVersion : 26]
+
+    depsVersion = [
+        debugDBVersion:'1.0.6'
+
+    ]
+
+    deps = [
+        debugDB:'com.amitshekhar.android:debug-db:' + depsVersion.debugDBVersion
+    ]
+
+    bintrayInfo = [
+        //bintray.com用户名
+        userOrg:'dzws',
+        //jcenter上的路径
+        groupId:'com.dzws',
+        //项目名称
+        artifactId:'relogin',
+        //版本号
+        publishVersion:'1.0.0',
+        //描述，不重要
+        desc:'relogin for android',
+        //网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
+        website:'https://github.com/DzwsGo/Relogin',
+        uploadName:'relogin'
+    ]
+
+}

@@ -1,12 +1,13 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'//添加
+
 
 android {
-  compileSdkVersion 28
-  buildToolsVersion "29.0.1"
+  compileSdkVersion rootProject.ext.android.compileSdkVersion
 
   defaultConfig {
-    minSdkVersion 14
-    targetSdkVersion 28
+    minSdkVersion rootProject.ext.android.minSdkVersion
+    targetSdkVersion rootProject.ext.android.targetSdkVersion
     versionCode 1
     versionName "1.0"
 
@@ -19,6 +20,9 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
   }
+  lintOptions {
+    abortOnError false
+  }
 }
 
 dependencies {
@@ -30,5 +34,16 @@ dependencies {
   androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
   api project(':relogin_compiler')
   annotationProcessor project(':relogin_compiler')
-
+}
+//添加
+publish {
+  artifactId = 'relogin'
+  userOrg = rootProject.userOrg
+  System.out.println("relogin userOrg : $userOrg")
+  groupId = rootProject.groupId
+  uploadName = rootProject.uploadName
+  publishVersion = rootProject.publishVersion
+  desc = rootProject.desc
+  website = rootProject.website
+  licences = rootProject.licences
 }
