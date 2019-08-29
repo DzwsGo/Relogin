@@ -1,6 +1,9 @@
 # Relogin
 Relogin for Android
 
+### 引入Relogin
+``implementation 'com.dzws:relogin:1.0.0'``
+
 1、初始化Relogin
 
 
