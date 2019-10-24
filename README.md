@@ -62,3 +62,8 @@ Relogin for Android
 
     *  ReloginController.getInstance().toLogin();
     *  ReloginController.getInstance().setResponseCode(code)；
+    
+5、Relogin在组件化中的应用
+ * base module中 ``api 'com.dzws:relogin:1.0.0'``
+ * 需要注解的Module中引入 ``annotationProcessor 'com.dzws:relogin_compiler:1.0.0'`` 即可
+ 
